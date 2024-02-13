@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cupid Tales Pairing</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Roboto:wght@400&display=swap">
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Roboto', sans-serif;
             margin: 20px;
             background-color: #fdd5d5; /* Light pink background color */
             text-align: center;
@@ -14,7 +15,10 @@
         }
 
         h2 {
+            font-family: 'Great Vibes', cursive;
             color: #d9534f; /* Red color for header */
+            margin-bottom: 20px;
+            font-size: 50px;
         }
 
         label {
@@ -43,10 +47,18 @@
         .card {
             background-color: #fff; /* White background color for card */
             border: 1px solid #d9534f; /* Red color for border */
-            border-radius: 5px;
+            border-radius: 10px;
             padding: 15px;
             margin: 10px;
             width: 300px;
+            font-size: 60px;
+            font-weight: 600;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Box shadow for a subtle lift */
+            transition: transform 0.3s ease-in-out; /* Smooth transition on hover */
+        }
+
+        .card:hover {
+            transform: scale(1.05); /* Enlarge the card on hover */
         }
 
         p {
@@ -88,7 +100,7 @@
 
                     if (filteredPairs.length > 0) {
                         filteredPairs.forEach(pair => {
-                            const pairNames = `${pair.Name1} (${pair.Gender1}, ${pair.Year1}, ${pair.Department1}) and ${pair.Name2} (${pair.Gender2}, ${pair.Year2}, ${pair.Department2})`;
+                            const pairNames = `${pair.Name1} (${pair.Year1} yr , ${pair.Department1})<br> and <br> ${pair.Name2} ( ${pair.Year2} yr, ${pair.Department2})`;
                             outputDiv.innerHTML += `<div class="card"><p>${pairNames}</p></div>`;
                             alreadyPaired.add(name1.toLowerCase());
                             alreadyPaired.add(name2.toLowerCase());
