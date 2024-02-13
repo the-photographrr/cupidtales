@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cupid Tales Pairing</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 20px;
+            background-color: #fdd5d5; /* Light pink background color */
+            text-align: center;
+            color: #880d0d; /* Dark red text color */
+        }
+
+        h2 {
+            color: #d9534f; /* Red color for header */
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+            font-size: 18px;
+            color: #d9534f; /* Red color for label */
+        }
+
+        input {
+            width: 200px;
+            padding: 8px;
+            font-size: 16px;
+            margin-bottom: 20px;
+            border: 2px solid #d9534f; /* Red color for border */
+            border-radius: 5px;
+        }
+
+        #output {
+            margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .card {
+            background-color: #fff; /* White background color for card */
+            border: 1px solid #d9534f; /* Red color for border */
+            border-radius: 5px;
+            padding: 15px;
+            margin: 10px;
+            width: 300px;
+        }
+
+        p {
+            margin: 10px 0;
+            font-size: 16px;
+            color: #880d0d; /* Dark red text color */
+        }
+    </style>
+</head>
+<body>
+    <h2>Cupid Tales Pairing</h2>
+    <label for="nameInput">Enter Name:</label>
+    <input type="text" id="nameInput" oninput="showPairs()">
+    <div id="output"></div>
+
+    <script>
+        function showPairs() {
+            const nameInput = document.getElementById('nameInput').value.trim().toLowerCase();
+            const outputDiv = document.getElementById('output');
+            outputDiv.innerHTML = '';
+
+            if (nameInput === '') {
+                return; // Exit function if the search box is empty
+            }
+
+            const alreadyPaired = new Set();
+
+            fetch('finalpair.json')
+                .then(response => response.json())
+                .then(data => {
+                    const filteredPairs = data.filter(pair => {
+                        const name1 = pair.Name1.toLowerCase();
+                        const name2 = pair.Name2.toLowerCase();
+
+                        return (name1.includes(nameInput) || name2.includes(nameInput)) &&
+                               !alreadyPaired.has(name1) &&
+                               !alreadyPaired.has(name2);
+                    });
+
+                    if (filteredPairs.length > 0) {
+                        filteredPairs.forEach(pair => {
+                            const pairNames = `${pair.Name1} (${pair.Gender1}, ${pair.Year1}, ${pair.Department1}) and ${pair.Name2} (${pair.Gender2}, ${pair.Year2}, ${pair.Department2})`;
+                            outputDiv.innerHTML += `<div class="card"><p>${pairNames}</p></div>`;
+                            alreadyPaired.add(name1.toLowerCase());
+                            alreadyPaired.add(name2.toLowerCase());
+                        });
+                    } else {
+                        outputDiv.innerHTML = '<p>No matching pairs found.</p>';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching JSON:', error);
+                });
+        }
+    </script>
+</body>
+</html>
